@@ -80,19 +80,25 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const cloudinary = require('cloudinary').v2; // <--- YE MISSING THA
+require('dotenv').config()
 
 const app = express();
 const port = 8000;
 
-app.use(cors());
+app.use(cors({
+    origin: '*', // Sabhi origins allow karein (development ke liye easy hai)
+    methods: ['GET', 'POST'],
+    credentials: true
+}));
 // Body limit 50mb for high-res images
 app.use(express.json({ limit: '50mb' }));
 
 // Cloudinary Setup
+// Cloudinary Setup ab process.env use karega
 cloudinary.config({ 
-  cloud_name: 'dg1jp2bnq', 
-  api_key: '362782742649224', 
-  api_secret: 'vyc-SnMu8UH1CNOqWwjHMrn_RHM' 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET 
 });
 
 // 1. Proxy Endpoint: External image ko base64 banane ke liye
