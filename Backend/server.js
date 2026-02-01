@@ -74,13 +74,12 @@
 // app.listen(port, () => console.log(`Server running at http://localhost:${port}`));
 
 
-
-
+require('dotenv').config()
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const cloudinary = require('cloudinary').v2; // <--- YE MISSING THA
-require('dotenv').config()
+
 
 const app = express();
 const port = 8000;

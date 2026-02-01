@@ -1952,7 +1952,7 @@ const VirtualTryOn = () => {
         canvas.height = userImg.height;
         ctx.drawImage(userImg, 0, 0);
         jewelImg.crossOrigin = "anonymous";
-        jewelImg.src = `http://localhost:8000/api/proxy-image?url=${encodeURIComponent(jewelleryUrl)}&raw=true`; 
+        jewelImg.src = `https://virtual-try-backend-bgtk.onrender.com/api/proxy-image?url=${encodeURIComponent(jewelleryUrl)}&raw=true`; 
         jewelImg.onload = () => {
           const jWidth = canvas.width * 0.45;
           const jHeight = jWidth;
@@ -2096,11 +2096,11 @@ const sendVirtualTryOnRequest = async (portraitBase64, attireType) => {
     }, 4500);
 
     // 2. Fetch Jewellery Proxy
-    const proxyRes = await fetch(`http://localhost:8000/api/proxy-image?url=${encodeURIComponent(item.image_url)}`);
+    const proxyRes = await fetch(`https://virtual-try-backend-bgtk.onrender.com/api/proxy-image?url=${encodeURIComponent(item.image_url)}`);
     const proxyData = await proxyRes.json();
 
     // 3. Main Try-On API Call
-    const response = await fetch('http://localhost:8000/api/try-on', {
+    const response = await fetch('https://virtual-try-backend-bgtk.onrender.com/api/try-on', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
