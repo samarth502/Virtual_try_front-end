@@ -176,7 +176,9 @@ app.get('/api/proxy-image', async (req, res) => {
 
 app.post('/api/try-on', async (req, res) => {
     const { model_photo, clothing_photo, attire } = req.body;
-    const API_KEY = '21H3KYWLGV3AAAG2TQKK15J5OENO1Q';
+    // const API_KEY = '21H3KYWLGV3AAAG2TQKK15J5OENO1Q';
+
+   const API_KEY   = "97NSHREICE17VE9INQYPV1JFY854BY";
 
     try {
         console.log("1. Starting Parallel Uploads to Cloudinary...");
