@@ -271,7 +271,7 @@ import {
 
 const VirtualTryOn = () => {
   const [messages, setMessages] = useState([
-    { type: 'bot', text: 'Welcome to the Lumière Private Suite. I am your AI Stylist. Please select an exquisite piece from our collection to begin.' }
+    { type: 'bot', text: 'Welcome to the RLAI Private Suite. I am your AI Stylist. Please select an exquisite piece from our collection to begin.' }
   ]);
   const [input, setInput] = useState('');
   const [step, setStep] = useState('initial'); 
@@ -635,7 +635,7 @@ const VirtualTryOn = () => {
         <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#10b981]" />
       </div>
       <div className="flex flex-col -space-y-0.5">
-        <span className="text-[8px] font-black text-white uppercase tracking-wider">LUMIÈRE <span className="text-emerald-400">LIVE</span></span>
+        <span className="text-[8px] font-black text-white uppercase tracking-wider">RLAI <span className="text-emerald-400">LIVE</span></span>
         <span className="text-[6px] text-slate-500 font-bold uppercase">Encrypted</span>
       </div>
     </div>
@@ -645,7 +645,7 @@ const VirtualTryOn = () => {
       <motion.h1 
         className="text-white font-light text-base tracking-[0.6em] uppercase font-serif"
       >
-        Lumière
+        RLAI
       </motion.h1>
       <div className="h-[0.5px] w-8 bg-amber-400/40 mt-0.5" />
     </div>
