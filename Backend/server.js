@@ -1,78 +1,3 @@
-// const express = require('express');
-// const cors = require('cors');
-// const axios = require('axios');
-// const FormData = require('form-data');
-
-// const app = express();
-// const port = 8000;
-
-// app.use(cors());
-// // Body limit ko 50mb rakha hai taaki heavy images crash na karein
-// app.use(express.json({ limit: '50mb' }));
-
-// // 1. Proxy Endpoint: Jewellery image ko fetch karke Base64 banane ke liye
-// app.get('/api/proxy-image', async (req, res) => {
-//     const imageUrl = req.query.url;
-//     if (!imageUrl) return res.status(400).json({ error: 'URL missing' });
-
-//     try {
-//         const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-//         const buffer = Buffer.from(response.data);
-//         const base64 = buffer.toString('base64');
-//         const contentType = response.headers['content-type'] || 'image/jpeg';
-        
-//         res.json({ base64: `data:${contentType};base64,${base64}` });
-//     } catch (error) {
-//         res.status(500).json({ error: 'Image fetch failed', details: error.message });
-//     }
-// });
-
-// app.post('/api/try-on', async (req, res) => {
-//     const { model_photo, clothing_photo } = req.body;
-//     const API_KEY = '21H3KYWLGV3AAAG2TQKK15J5OENO1Q';
-
-//     try {
-//         console.log("Preparing data as per documentation...");
-
-//         const form = new FormData();
-        
-//         // Documentation kehti hai URL chahiye, par kai baar ye Base64 string bhi accept kar lete hain
-//         // Agar ye fail ho, toh aapko pehle images upload karke unka URL yahan dena hoga.
-//         form.append('model_photo', model_photo); 
-//         form.append('clothing_photo', clothing_photo);
-        
-//         // YE DO FIELDS DOCUMENTATION MEIN REQUIRED HAIN:
-//         form.append('prompt', 'A person wearing luxury jewellery'); 
-//         form.append('ratio', 'auto');
-
-//         console.log("Sending Request to AI API...");
-
-//         const apiResponse = await axios.post(
-//             `https://thenewblack.ai/api/1.1/wf/vto_stream?api_key=${API_KEY}`,
-//             form,
-//             {
-//                 headers: {
-//                     ...form.getHeaders(),
-//                 }
-//             }
-//         );
-
-//         console.log("Success!");
-//         res.json(apiResponse.data);
-
-//     } catch (error) {
-//         if (error.response) {
-//             console.error("AI API Error Detail:", error.response.data);
-//             res.status(400).json(error.response.data);
-//         } else {
-//             console.error('SERVER ERROR:', error.message);
-//             res.status(500).json({ error: 'System Error' });
-//         }
-//     }
-// });
-
-// app.listen(port, () => console.log(`Server running at http://localhost:${port}`));
-
 
 require('dotenv').config()
 const express = require('express');
@@ -117,75 +42,22 @@ app.get('/api/proxy-image', async (req, res) => {
     }
 });
 
-// app.post('/api/try-on', async (req, res) => {
-//     const { model_photo, clothing_photo, attire } = req.body;
-//     const API_KEY = '21H3KYWLGV3AAAG2TQKK15J5OENO1Q';
-
-//     try {
-//         console.log("1. Starting Upload to Cloudinary...");
-
-//         // Ensure photos have correct format for Cloudinary
-//         const modelImg = model_photo.startsWith('data:') ? model_photo : `data:image/jpeg;base64,${model_photo}`;
-//         const clothingImg = clothing_photo.startsWith('data:') ? clothing_photo : `data:image/jpeg;base64,${clothing_photo}`;
-
-//         // User Photo upload
-//         const modelRes = await cloudinary.uploader.upload(modelImg, {
-//             folder: "virtual_tryon/users",
-//             resource_type: "auto"
-//         });
-//         console.log("Model Uploaded:", modelRes.secure_url);
-
-//         // Jewellery Image upload
-//         const clothingRes = await cloudinary.uploader.upload(clothingImg, {
-//             folder: "virtual_tryon/assets",
-//             resource_type: "auto"
-//         });
-//         console.log("Jewellery Uploaded:", clothingRes.secure_url);
-
-//         console.log("2. Sending to AI API...");
-
-//         const apiResponse = await axios.post(
-//             `https://thenewblack.ai/api/1.1/wf/vto_stream?api_key=${API_KEY}`,
-//             {
-//                 model_photo: modelRes.secure_url,
-//                 clothing_photo: clothingRes.secure_url,
-//                 prompt: `A high-quality professional photo of a person wearing luxury jewellery, style: ${attire || 'Elegant'}.`,
-//                 ratio: 'auto'
-//             }
-//         );
-
-//         console.log("3. AI Response Received Success!");
-//         res.json(apiResponse.data);
-
-//     } catch (error) {
-//         console.error("--- DETAILED ERROR LOG ---");
-//         // Detailed error logging
-//         if (error.response) {
-//             console.error("API Error Data:", error.response.data);
-//             res.status(400).json({ error: "API Error", details: error.response.data });
-//         } else if (error.request) {
-//             console.error("No response from server");
-//             res.status(500).json({ error: "No response from AI server" });
-//         } else {
-//             console.error("Error Message:", error.message);
-//             res.status(500).json({ error: error.message });
-//         }
-//     }
-// });
 
 
 app.post('/api/try-on', async (req, res) => {
     const { model_photo, clothing_photo, attire } = req.body;
-    // const API_KEY = '21H3KYWLGV3AAAG2TQKK15J5OENO1Q';
+    const API_KEY = '21H3KYWLGV3AAAG2TQKK15J5OENO1Q';
 
-   const API_KEY   = "97NSHREICE17VE9INQYPV1JFY854BY";
+    if (!model_photo || !clothing_photo) {
+        return res.status(400).json({ error: "Missing images. Please upload both photos." });
+    }
 
     try {
-        console.log("1. Starting Parallel Uploads to Cloudinary...");
+        console.log("1. Starting Parallel Uploads...");
 
-        // Photos format ensure karna taaki Cloudinary reject na kare
-        const modelImg = model_photo.startsWith('data:') ? model_photo : `data:image/jpeg;base64,${model_photo}`;
-        const clothingImg = clothing_photo.startsWith('data:') ? clothing_photo : `data:image/jpeg;base64,${clothing_photo}`;
+        // Ensure strings are valid before calling startsWith
+        const modelImg = String(model_photo).startsWith('data:') ? model_photo : `data:image/jpeg;base64,${model_photo}`;
+        const clothingImg = String(clothing_photo).startsWith('data:') ? clothing_photo : `data:image/jpeg;base64,${clothing_photo}`;
 
         // Strategy: Dono uploads ko ek saath start karna (Time saving)
         const [modelRes, clothingRes] = await Promise.all([
